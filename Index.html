@@ -314,10 +314,6 @@
   @keyframes eq{ 0%,100%{ height:6px; } 50%{ height:16px; } }
   .music-toggle.paused .bar{ animation-play-state:paused; height:6px; }
 
-  .gallery{
-    display:none;
-  }
-
   .polaroid{
     background:#fff;
     padding:8px 8px 16px;
@@ -332,18 +328,67 @@
   .polaroid.p1{ float:right; margin:4px 4px 14px 20px; transform:rotate(6deg); }
   .polaroid.p2{ float:left; margin:10px 20px 14px 4px; transform:rotate(-5deg); }
   .polaroid.p3{ float:right; margin:6px 0 14px 18px; transform:rotate(-4deg); }
-  .polaroid.p4{ float:left; margin:8px 18px 14px 0; transform:rotate(5deg); }
-  .polaroid.p5{ float:right; margin:6px 6px 14px 20px; transform:rotate(3deg); }
   .clearfix{ clear:both; }
 
+  /* auto-sliding full photo: cycles through 5 photos, edge-to-edge, no frame */
+  .full-slider{
+    position:relative;
+    width:100%;
+    height:260px;
+    border-radius:14px;
+    overflow:hidden;
+    margin:28px 0;
+    box-shadow:0 16px 30px -12px rgba(122,60,20,0.4);
+  }
+  .full-slider img{
+    position:absolute; inset:0;
+    width:100%; height:100%;
+    object-fit:cover;
+    opacity:0;
+    animation:fullSlideFade 15s infinite;
+  }
+  .full-slider img:nth-child(1){ animation-delay:0s; }
+  .full-slider img:nth-child(2){ animation-delay:3s; }
+  .full-slider img:nth-child(3){ animation-delay:6s; }
+  .full-slider img:nth-child(4){ animation-delay:9s; }
+  .full-slider img:nth-child(5){ animation-delay:12s; }
+  @keyframes fullSlideFade{
+    0%{ opacity:0; }
+    4%{ opacity:1; }
+    16%{ opacity:1; }
+    20%{ opacity:0; }
+    100%{ opacity:0; }
+  }
+  .full-slider .dots{
+    position:absolute; bottom:14px; left:0; right:0;
+    display:flex; justify-content:center; gap:6px;
+    z-index:5;
+  }
+  .full-slider .dots span{
+    width:6px; height:6px; border-radius:50%;
+    background:rgba(255,255,255,0.55);
+    animation:fullDotPulse 15s infinite;
+  }
+  .full-slider .dots span:nth-child(1){ animation-delay:0s; }
+  .full-slider .dots span:nth-child(2){ animation-delay:3s; }
+  .full-slider .dots span:nth-child(3){ animation-delay:6s; }
+  .full-slider .dots span:nth-child(4){ animation-delay:9s; }
+  .full-slider .dots span:nth-child(5){ animation-delay:12s; }
+  @keyframes fullDotPulse{
+    0%{ background:rgba(255,255,255,0.55); width:6px; }
+    4%{ background:#fff; width:16px; }
+    16%{ background:#fff; width:16px; }
+    20%{ background:rgba(255,255,255,0.55); width:6px; }
+    100%{ background:rgba(255,255,255,0.55); width:6px; }
+  }
+
   @media (max-width:480px){
+    .full-slider{ height:200px; }
     .polaroid{ width:110px; padding:6px 6px 12px; }
     .polaroid img{ height:80px; }
     .polaroid.p1{ margin:4px 0 10px 12px; }
     .polaroid.p2{ margin:8px 12px 10px 0; }
     .polaroid.p3{ margin:4px 0 10px 12px; }
-    .polaroid.p4{ margin:6px 12px 10px 0; }
-    .polaroid.p5{ margin:4px 0 10px 12px; }
   }
 </style>
 </head>
@@ -359,7 +404,7 @@
     <div class="envelope-pocket-right"></div>
     <div class="letter-card"></div>
     <div class="envelope-flap"></div>
-    <div class="seal">JS</div>
+    <div class="seal">EY</div>
   </div>
   <p class="hint">Ketuk amplopnya untuk membuka <span class="arrow">↓</span></p>
 </div>
@@ -376,22 +421,34 @@
     <h1>Thank you for being my safest and sweetest home for these past two months</h1>
 
     <div class="body-text">
-      <div class="polaroid p1"><img src="foto-1.jpg" alt="Momen berdua 1"></div>
+      <div class="polaroid p1"><img src="https://raw.githubusercontent.com/aydzensng/Happy2nd/f5cd562cdb4343c68ac50aa39ce5c99b87e0c3f2/Ayden%20Sng%20Lyu%20Sitong.jpg" alt="Momen berdua 1"></div>
       <p>
         Hai dek hahaha. Gak kerasa banget ya udah 2 bulan kita bersama. Coba kita hitung yuk? wah ternyata kita udah 2 bulan, 62 hari, 1.488 jam, 89.280 menit, 5.356.800 detik. Pertama kali jadian sama kamu, mas merasa gak yakin sama diri mas. Yang mas tau saat itu, mas sayang adek. Dengan segala ketakutan itu, mas coba melawannya dengan berpikir semua orang itu gak sama kok. Tapi perasaan gak cukup itu selalu menjadi ketakutan aku. Tapi kamu selalu memeluk mas dengan cara yang terbaik. Dulu mas berpikir ada gak ya seseorang yang bisa memeluk mas di saat baik dan buruknya mas, ternyata orangnya kamu.
+      </p>
 
-      <div class="polaroid p2"><img src="foto-2.jpg" alt="Momen berdua 2"></div>
+      <div class="polaroid p2"><img src="https://raw.githubusercontent.com/aydzensng/Happy2nd/f5cd562cdb4343c68ac50aa39ce5c99b87e0c3f2/ayden%20%26%20elio%20_%20pic%20from%20their%20annecy%20vlog.jpg" alt="Momen berdua 2"></div>
       <p>
         Dua bulan bersama ini banyak yang kita lewatin ya. Walaupun masih terhitung baru, tapi udah banyak yang kita lewatin. Mas mau minta maaf sama adek, mas sering banget buat adek sedih. Terkadang mas suka melakukan sesuatu yang bikin adek ketrigger, tapi adek harus percaya mas gak pernah bermaksud membuat adek merasa sedih. Terimakasih juga setiap mas melakukan kesalahan yang membuat kamu sedih, kamu selalu memberi tahu mas dengan baik. Gimana caranya mas jelasin kepada semua orang di dunia ini kalau kamu sangat indah dan berharga? dan aku, Aiden Helior, menjadi seseorang yang sangat beruntung mendapatkan kamu.
       </p>
 
-      <div class="polaroid p3"><img src="foto-3.jpg" alt="Momen berdua 3"></div>
+      <div class="polaroid p3"><img src="https://raw.githubusercontent.com/aydzensng/Happy2nd/f5cd562cdb4343c68ac50aa39ce5c99b87e0c3f2/ayden%20%26%20elio%20_%20pic%20from%20their%20milan%20vlog.jpg" alt="Momen berdua 3"></div>
       <p>
         Seperti yang sering mas bilang ke adek, mas bukan manusia sempurna. Hubungan yang kita jalani juga bukan hubungan yang sempurna dengan kebahagiaan di setiap harinya. Pasti ada masa masa di mana nanti kamu kesel sama mas dan kita saling berdebat tentang pendapat kita masing masing. Tapi yang bisa mas janjikan kepada kamu, apapun yang terjadi di masa depan nanti... Aku akan selalu memilih kamu dan aku akan selalu menggengam tangan kamu.
       </p>
 
-      <div class="polaroid p4"><img src="foto-4.jpg" alt="Momen berdua 4"></div>
-      <div class="polaroid p5"><img src="foto-5.jpg" alt="Momen berdua 5"></div>
+      <div class="clearfix"></div>
+
+      <div class="full-slider">
+        <img src="https://raw.githubusercontent.com/aydzensng/Happy2nd/79545b38b98cd4a96419b5884cde416ab7ce6515/double%20helix%20%282%29.jpg" alt="Momen berdua 1">
+        <img src="https://raw.githubusercontent.com/aydzensng/Happy2nd/79545b38b98cd4a96419b5884cde416ab7ce6515/ayden%20%26%20elio%20_%20weibo.jpg" alt="Momen berdua 2">
+        <img src="https://raw.githubusercontent.com/aydzensng/Happy2nd/79545b38b98cd4a96419b5884cde416ab7ce6515/Aylio%20%23Aylio%20%23AydenSng%20%23Lyusitong%20%23DoubleHelix%20%23%E5%AD%99%E6%94%BF%20%23%E5%90%95%E6%80%9D%E7%9E%B3%20%23%E5%8F%8C%E7%A8%8B%20%284%29.jpg" alt="Momen berdua 3">
+        <img src="https://raw.githubusercontent.com/aydzensng/Happy2nd/f5cd562cdb4343c68ac50aa39ce5c99b87e0c3f2/ayden%20%26%20elio%20_%20pic%20from%20their%20milan%20vlog%20%281%29.jpg" alt="Momen berdua 4">
+        <img src="https://raw.githubusercontent.com/aydzensng/Happy2nd/f5cd562cdb4343c68ac50aa39ce5c99b87e0c3f2/ayden%20%26%20elio%20_%20pic%20from%20their%20annecy%20vlog%20%281%29.jpg" alt="Momen berdua 5">
+        <img src="https://raw.githubusercontent.com/aydzensng/Happy2nd/79545b38b98cd4a96419b5884cde416ab7ce6515/Aylio%20%23Aylio%20%23AydenSng%20%23Lyusitong%20%23DoubleHelix%20%23%E5%AD%99%E6%94%BF%20%23%E5%90%95%E6%80%9D%E7%9E%B3%20%23%E5%8F%8C%E7%A8%8B%20%282%29.jpg" alt="Momen berdua 6">
+        <img src="https://raw.githubusercontent.com/aydzensng/Happy2nd/79545b38b98cd4a96419b5884cde416ab7ce6515/Aylio%20%23Aylio%20%23AydenSng%20%23Lyusitong%20%23DoubleHelix%20%23%E5%AD%99%E6%94%BF%20%23%E5%90%95%E6%80%9D%E7%9E%B3%20%23%E5%8F%8C%E7%A8%8B%20%281%29.jpg" alt="Momen berdua 7">
+        <img src="https://raw.githubusercontent.com/aydzensng/Happy2nd/79545b38b98cd4a96419b5884cde416ab7ce6515/Ayden%20%26%20Elio%20%281%29.jpg" alt="Momen berdua 8">
+        <div class="dots"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+      </div>
     </div>
 
     <div class="clearfix"></div>
