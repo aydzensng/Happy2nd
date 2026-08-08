@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Untuk Kamu, Sayang</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Newsreader:ital,wght@0,400;0,500;1,400&family=Inter:wght@400;500;600&display=swap');
+
+  :root{
+    --clay:#D9642C;
+    --amber:#F2A24B;
+    --peach:#FBDFC0;
+    --paper:#FFF8EE;
+    --plum:#4A2415;
+    --plum-soft:#7A4A34;
+    --line:#E7C79B;
+  }
+
+  *{ box-sizing:border-box; margin:0; padding:0; }
+
+  body{
+    font-family:'Newsreader', serif;
+    color:var(--plum);
+    min-height:100vh;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 0%, #FFE7C7 0%, transparent 60%),
+      linear-gradient(180deg, #FFF3E1 0%, #FBDCB2 45%, #F3B57C 100%);
+    overflow-x:hidden;
+    position:relative;
+  }
+
+  .petals{
+    position:fixed; inset:0; pointer-events:none; z-index:1; overflow:hidden;
+  }
+  .petal{
+    position:absolute; top:-40px; font-size:16px; opacity:0.55;
+    animation: fall linear infinite;
+    color:var(--clay);
+  }
+  @keyframes fall{
+    0%{ transform:translateY(-5vh) translateX(0) rotate(0deg); }
+    100%{ transform:translateY(105vh) translateX(20px) rotate(200deg); }
+  }
+
+  .stage{
+    position:relative; z-index:2;
+    min-height:100vh;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding:32px 20px;
+    text-align:center;
+    transition:opacity 0.6s ease;
+  }
+  .stage.hide{ opacity:0; pointer-events:none; position:absolute; inset:0; }
+
+  .prelude{
+    font-family:'Inter', sans-serif;
+    font-size:13px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--plum-soft);
+    margin-bottom:28px;
+  }
+
+  .envelope-wrap{
+    width:260px; height:180px;
+    position:relative;
+    cursor:pointer;
+    perspective:1000px;
+  }
+
+  .envelope-body{
+    position:absolute; inset:0;
+    background:linear-gradient(160deg, #F6C68C, #E89552);
+    border-radius:6px;
+    box-shadow:0 18px 40px -14px rgba(122,60,20,0.45);
+  }
+  .envelope-pocket-left, .envelope-pocket-right{
+    position:absolute; top:0; width:0; height:0;
+    border-style:solid;
+  }
+  .envelope-pocket-left{
+    left:0;
+    border-width:90px 130px 90px 0;
+    border-color:transparent #F3B673 transparent transparent;
+    opacity:0.9;
+  }
+  .envelope-pocket-right{
+    right:0;
+    border-width:90px 0 90px 130px;
+    border-color:transparent transparent transparent #EFAA65;
+    opacity:0.9;
+  }
+
+  .letter-card{
+    position:absolute;
+    left:14px; right:14px; top:14px;
+    height:150px;
+    background:var(--paper);
+    border-radius:3px;
+    box-shadow:0 4px 10px rgba(122,60,20,0.15);
+    transition:transform 0.9s cubic-bezier(.22,1,.36,1);
+    transform:translateY(0);
+    z-index:2;
+  }
+  .envelope-wrap.open .letter-card{
+    transform:translateY(-210px) scale(1.03);
+  }
+
+  .envelope-flap{
+    position:absolute; top:0; left:0; width:0; height:0;
+    border-style:solid;
+    border-width:0 130px 95px 130px;
+    border-color:transparent transparent var(--clay) transparent;
+    transform-origin:top center;
+    transition:transform 0.7s cubic-bezier(.22,1,.36,1);
+    z-index:3;
+    filter:drop-shadow(0 2px 4px rgba(122,60,20,0.2));
+  }
+  .envelope-wrap.open .envelope-flap{
+    transform:rotateX(180deg);
+    z-index:0;
+  }
+
+  .seal{
+    position:absolute; top:70px; left:50%; transform:translateX(-50%);
+    width:46px; height:46px; border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #C4501F, #8E3611);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces', serif; font-style:italic; font-size:18px;
+    color:#FBDFC0;
+    box-shadow:0 3px 6px rgba(90,40,10,0.4);
+    z-index:4;
+    transition:opacity 0.4s ease, transform 0.4s ease;
+  }
+  .envelope-wrap.open .seal{ opacity:0; transform:translateX(-50%) scale(0.4); }
+
+  .hint{
+    margin-top:26px;
+    font-family:'Inter', sans-serif;
+    font-size:13px;
+    color:var(--plum-soft);
+    letter-spacing:0.02em;
+  }
+  .hint .arrow{ display:inline-block; animation:bounce 1.6s ease-in-out infinite; }
+  @keyframes bounce{ 0%,100%{transform:translateY(0);} 50%{transform:translateY(4px);} }
+
+  .letter-page{
+    position:relative; z-index:2;
+    max-width:600px; margin:0 auto;
+    padding:64px 24px 100px;
+    opacity:0; transform:translateY(24px);
+    transition:opacity 0.9s ease, transform 0.9s ease;
+  }
+  .letter-page.show{ opacity:1; transform:translateY(0); }
+
+  .paper{
+    background:var(--paper);
+    border-radius:4px;
+    padding:52px 44px;
+    box-shadow:0 30px 60px -20px rgba(122,60,20,0.35);
+    position:relative;
+  }
+  .paper::before{
+    content:"";
+    position:absolute; left:0; top:0; bottom:0; width:6px;
+    background:linear-gradient(180deg, var(--clay), var(--amber));
+    border-radius:4px 0 0 4px;
+  }
+
+  .badge{
+    display:inline-block;
+    font-family:'Inter', sans-serif;
+    font-size:11px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--clay);
+    background:var(--peach);
+    padding:5px 12px;
+    border-radius:20px;
+    margin-bottom:20px;
+  }
+
+  .to-line{
+    font-family:'Inter', sans-serif;
+    font-size:13px;
+    color:var(--plum-soft);
+    margin-bottom:6px;
+  }
+
+  h1{
+    font-family:'Fraunces', serif;
+    font-style:italic;
+    font-weight:500;
+    font-size:clamp(28px,5vw,40px);
+    line-height:1.15;
+    color:var(--clay);
+    margin-bottom:28px;
+  }
+
+  .body-text p{
+    font-size:18px;
+    line-height:1.85;
+    margin-bottom:18px;
+    color:var(--plum);
+  }
+  .body-text p:first-of-type::first-letter{
+    font-family:'Fraunces', serif;
+    font-size:52px;
+    font-style:italic;
+    color:var(--clay);
+    float:left;
+    line-height:0.8;
+    margin:8px 8px 0 0;
+  }
+
+  .divider{
+    display:flex; align-items:center; gap:12px;
+    margin:32px 0;
+    color:var(--line);
+  }
+  .divider::before, .divider::after{
+    content:""; flex:1; height:1px; background:var(--line);
+  }
+  .divider span{ font-size:14px; }
+
+  .stat-row{
+    display:flex; gap:14px; margin:32px 0; flex-wrap:wrap;
+  }
+  .stat{
+    background:var(--peach);
+    border-radius:10px;
+    padding:14px 18px;
+    flex:1; min-width:130px;
+  }
+  .stat .num{
+    font-family:'Fraunces', serif;
+    font-size:26px; font-weight:600;
+    color:var(--clay);
+    line-height:1;
+  }
+  .stat .lbl{
+    font-family:'Inter', sans-serif;
+    font-size:12px;
+    color:var(--plum-soft);
+    margin-top:4px;
+  }
+
+  .signoff{
+    margin-top:36px;
+    text-align:right;
+  }
+  .signoff .with-love{
+    font-family:'Inter', sans-serif;
+    font-size:13px;
+    color:var(--plum-soft);
+    margin-bottom:4px;
+  }
+  .signoff .name{
+    font-family:'Fraunces', serif;
+    font-style:italic;
+    font-size:26px;
+    color:var(--clay);
+  }
+
+  .footnote{
+    text-align:center;
+    margin-top:36px;
+    font-family:'Inter', sans-serif;
+    font-size:12px;
+    color:var(--plum-soft);
+    opacity:0.8;
+  }
+
+  .edit-tag{
+    background:#FFF0DC;
+    color:#B4581C;
+    padding:1px 5px;
+    border-radius:4px;
+    font-style:normal;
+    font-family:'Inter', sans-serif;
+    font-size:0.75em;
+  }
+
+  @media (max-width:480px){
+    .paper{ padding:36px 24px; }
+    .stat-row{ flex-direction:column; }
+  }
+
+  .music-toggle{
+    position:fixed;
+    bottom:20px; right:20px;
+    width:46px; height:46px;
+    border-radius:50%;
+    background:var(--clay);
+    border:none;
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer;
+    box-shadow:0 8px 20px -6px rgba(122,60,20,0.5);
+    z-index:20;
+    opacity:0;
+    transform:scale(0.7);
+    transition:opacity 0.5s ease, transform 0.5s ease;
+  }
+  .music-toggle.show{ opacity:1; transform:scale(1); }
+  .music-toggle svg{ width:20px; height:20px; fill:var(--paper); }
+  .music-toggle .bar{
+    width:3px; height:12px; background:var(--paper); margin:0 1.5px;
+    display:inline-block; border-radius:2px;
+    animation:eq 0.9s ease-in-out infinite;
+  }
+  .music-toggle .bar:nth-child(2){ animation-delay:0.15s; }
+  .music-toggle .bar:nth-child(3){ animation-delay:0.3s; }
+  @keyframes eq{ 0%,100%{ height:6px; } 50%{ height:16px; } }
+  .music-toggle.paused .bar{ animation-play-state:paused; height:6px; }
+
+  .gallery{
+    display:none;
+  }
+
+  .polaroid{
+    background:#fff;
+    padding:8px 8px 16px;
+    box-shadow:0 10px 20px -8px rgba(122,60,20,0.4);
+    width:150px;
+  }
+  .polaroid img{
+    width:100%; height:110px;
+    object-fit:cover;
+    display:block;
+  }
+  .polaroid.p1{ float:right; margin:4px 4px 14px 20px; transform:rotate(6deg); }
+  .polaroid.p2{ float:left; margin:10px 20px 14px 4px; transform:rotate(-5deg); }
+  .polaroid.p3{ float:right; margin:6px 0 14px 18px; transform:rotate(-4deg); }
+  .polaroid.p4{ float:left; margin:8px 18px 14px 0; transform:rotate(5deg); }
+  .polaroid.p5{ float:right; margin:6px 6px 14px 20px; transform:rotate(3deg); }
+  .clearfix{ clear:both; }
+
+  @media (max-width:480px){
+    .polaroid{ width:110px; padding:6px 6px 12px; }
+    .polaroid img{ height:80px; }
+    .polaroid.p1{ margin:4px 0 10px 12px; }
+    .polaroid.p2{ margin:8px 12px 10px 0; }
+    .polaroid.p3{ margin:4px 0 10px 12px; }
+    .polaroid.p4{ margin:6px 12px 10px 0; }
+    .polaroid.p5{ margin:4px 0 10px 12px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="petals" id="petals"></div>
+
+<div class="stage" id="stage">
+  <p class="prelude">Sebuah surat kecil, untukmu</p>
+  <div class="envelope-wrap" id="envelope">
+    <div class="envelope-body"></div>
+    <div class="envelope-pocket-left"></div>
+    <div class="envelope-pocket-right"></div>
+    <div class="letter-card"></div>
+    <div class="envelope-flap"></div>
+    <div class="seal">JS</div>
+  </div>
+  <p class="hint">Ketuk amplopnya untuk membuka <span class="arrow">↓</span></p>
+</div>
+
+<audio id="bgSong" src="song.mp3" loop preload="auto"></audio>
+<button class="music-toggle" id="musicToggle" aria-label="Mute atau nyalakan musik">
+  <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+</button>
+
+<div class="letter-page" id="letterPage">
+  <div class="paper">
+    <span class="badge">Happy 2nd Mensiversary</span>
+    <p class="to-line">Untuk <span class="badge">Lucien Helior</span>,</p>
+    <h1>Thank you for being my safest and sweetest home for these past two months</h1>
+
+    <div class="body-text">
+      <div class="polaroid p1"><img src="foto-1.jpg" alt="Momen berdua 1"></div>
+      <p>
+        Hai dek hahaha. Gak kerasa banget ya udah 2 bulan kita bersama. Coba kita hitung yuk? wah ternyata kita udah 2 bulan, 62 hari, 1.488 jam, 89.280 menit, 5.356.800 detik. Pertama kali jadian sama kamu, mas merasa gak yakin sama diri mas. Yang mas tau saat itu, mas sayang adek. Dengan segala ketakutan itu, mas coba melawannya dengan berpikir semua orang itu gak sama kok. Tapi perasaan gak cukup itu selalu menjadi ketakutan aku. Tapi kamu selalu memeluk mas dengan cara yang terbaik. Dulu mas berpikir ada gak ya seseorang yang bisa memeluk mas di saat baik dan buruknya mas, ternyata orangnya kamu.
+
+      <div class="polaroid p2"><img src="foto-2.jpg" alt="Momen berdua 2"></div>
+      <p>
+        Dua bulan bersama ini banyak yang kita lewatin ya. Walaupun masih terhitung baru, tapi udah banyak yang kita lewatin. Mas mau minta maaf sama adek, mas sering banget buat adek sedih. Terkadang mas suka melakukan sesuatu yang bikin adek ketrigger, tapi adek harus percaya mas gak pernah bermaksud membuat adek merasa sedih. Terimakasih juga setiap mas melakukan kesalahan yang membuat kamu sedih, kamu selalu memberi tahu mas dengan baik. Gimana caranya mas jelasin kepada semua orang di dunia ini kalau kamu sangat indah dan berharga? dan aku, Aiden Helior, menjadi seseorang yang sangat beruntung mendapatkan kamu.
+      </p>
+
+      <div class="polaroid p3"><img src="foto-3.jpg" alt="Momen berdua 3"></div>
+      <p>
+        Seperti yang sering mas bilang ke adek, mas bukan manusia sempurna. Hubungan yang kita jalani juga bukan hubungan yang sempurna dengan kebahagiaan di setiap harinya. Pasti ada masa masa di mana nanti kamu kesel sama mas dan kita saling berdebat tentang pendapat kita masing masing. Tapi yang bisa mas janjikan kepada kamu, apapun yang terjadi di masa depan nanti... Aku akan selalu memilih kamu dan aku akan selalu menggengam tangan kamu.
+      </p>
+
+      <div class="polaroid p4"><img src="foto-4.jpg" alt="Momen berdua 4"></div>
+      <div class="polaroid p5"><img src="foto-5.jpg" alt="Momen berdua 5"></div>
+    </div>
+
+    <div class="clearfix"></div>
+
+    <div class="divider"><span>♡</span></div>
+
+    <div class="stat-row">
+      <div class="stat">
+        <div class="num" id="dayCount">60</div>
+        <div class="lbl">hari kita bersama</div>
+      </div>
+      <div class="stat">
+        <div class="num">∞</div>
+        <div class="lbl">rencana ke depan</div>
+      </div>
+    </div>
+
+    <p style="font-family:'Inter', sans-serif; font-size:13px; color:var(--plum-soft); text-align:center; margin-top:8px;">
+      dihitung otomatis sejak <span class="edit-tag">8 Juni 2026</span> 🧡
+    </p>
+
+    <div class="signoff">
+      <p class="with-love">Selalu sayang kamu,</p>
+      <p class="name">Aiden Helior</p>
+    </div>
+  </div>
+
+  <p class="footnote">dibuat dengan sepenuh hati, khusus untukmu 🧡</p>
+</div>
+
+<script>
+  const petalContainer = document.getElementById('petals');
+  const symbols = ['♡','✦','❀'];
+  for(let i=0;i<14;i++){
+    const p = document.createElement('div');
+    p.className = 'petal';
+    p.textContent = symbols[Math.floor(Math.random()*symbols.length)];
+    p.style.left = Math.random()*100 + 'vw';
+    p.style.animationDuration = (8 + Math.random()*8) + 's';
+    p.style.animationDelay = (Math.random()*8) + 's';
+    p.style.fontSize = (12 + Math.random()*10) + 'px';
+    petalContainer.appendChild(p);
+  }
+
+  const envelope = document.getElementById('envelope');
+  const stage = document.getElementById('stage');
+  const letterPage = document.getElementById('letterPage');
+  const bgSong = document.getElementById('bgSong');
+  const musicToggle = document.getElementById('musicToggle');
+  const dayCount = document.getElementById('dayCount');
+
+  const anniversaryDate = new Date(2026, 5, 8);
+  const today = new Date();
+  const msPerDay = 1000 * 60 * 60 * 24;
+  const diffDays = Math.floor((today - anniversaryDate) / msPerDay) + 1;
+  if(dayCount){
+    dayCount.textContent = diffDays > 0 ? diffDays : 0;
+  }
+
+  envelope.addEventListener('click', () => {
+    if(envelope.classList.contains('open')) return;
+    envelope.classList.add('open');
+
+    bgSong.volume = 0.7;
+    bgSong.play().catch(() => {});
+    musicToggle.classList.add('show');
+
+    setTimeout(() => {
+      stage.classList.add('hide');
+      letterPage.classList.add('show');
+    }, 750);
+  });
+
+  musicToggle.addEventListener('click', () => {
+    if(bgSong.paused){
+      bgSong.play().catch(() => {});
+      musicToggle.classList.remove('paused');
+    } else {
+      bgSong.pause();
+      musicToggle.classList.add('paused');
+    }
+  });
+</script>
+
+</body>
+</html>
