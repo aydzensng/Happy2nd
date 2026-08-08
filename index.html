@@ -341,7 +341,7 @@
   .polaroid.p3{ float:right; margin:6px 0 14px 18px; transform:rotate(-4deg); }
   .clearfix{ clear:both; }
 
-  /* auto-sliding full photo: cycles through 5 photos, edge-to-edge, no frame */
+  /* auto-sliding full photo: cycles through 8 photos, edge-to-edge, no frame */
   .full-slider{
     position:relative;
     width:100%;
@@ -356,18 +356,21 @@
     width:100%; height:100%;
     object-fit:cover;
     opacity:0;
-    animation:fullSlideFade 15s infinite;
+    animation:fullSlideFade 24s infinite;
   }
   .full-slider img:nth-child(1){ animation-delay:0s; }
   .full-slider img:nth-child(2){ animation-delay:3s; }
   .full-slider img:nth-child(3){ animation-delay:6s; }
   .full-slider img:nth-child(4){ animation-delay:9s; }
   .full-slider img:nth-child(5){ animation-delay:12s; }
+  .full-slider img:nth-child(6){ animation-delay:15s; }
+  .full-slider img:nth-child(7){ animation-delay:18s; }
+  .full-slider img:nth-child(8){ animation-delay:21s; }
   @keyframes fullSlideFade{
     0%{ opacity:0; }
-    4%{ opacity:1; }
-    16%{ opacity:1; }
-    20%{ opacity:0; }
+    2.5%{ opacity:1; }
+    10%{ opacity:1; }
+    12.5%{ opacity:0; }
     100%{ opacity:0; }
   }
   .full-slider .dots{
@@ -378,18 +381,21 @@
   .full-slider .dots span{
     width:6px; height:6px; border-radius:50%;
     background:rgba(255,255,255,0.55);
-    animation:fullDotPulse 15s infinite;
+    animation:fullDotPulse 24s infinite;
   }
   .full-slider .dots span:nth-child(1){ animation-delay:0s; }
   .full-slider .dots span:nth-child(2){ animation-delay:3s; }
   .full-slider .dots span:nth-child(3){ animation-delay:6s; }
   .full-slider .dots span:nth-child(4){ animation-delay:9s; }
   .full-slider .dots span:nth-child(5){ animation-delay:12s; }
+  .full-slider .dots span:nth-child(6){ animation-delay:15s; }
+  .full-slider .dots span:nth-child(7){ animation-delay:18s; }
+  .full-slider .dots span:nth-child(8){ animation-delay:21s; }
   @keyframes fullDotPulse{
     0%{ background:rgba(255,255,255,0.55); width:6px; }
-    4%{ background:#fff; width:16px; }
-    16%{ background:#fff; width:16px; }
-    20%{ background:rgba(255,255,255,0.55); width:6px; }
+    2.5%{ background:#fff; width:16px; }
+    10%{ background:#fff; width:16px; }
+    12.5%{ background:rgba(255,255,255,0.55); width:6px; }
     100%{ background:rgba(255,255,255,0.55); width:6px; }
   }
 
@@ -415,7 +421,7 @@
     <div class="envelope-pocket-right"></div>
     <div class="letter-card"></div>
     <div class="envelope-flap"></div>
-    <div class="seal">JS</div>
+    <div class="seal">EY</div>
   </div>
   <p class="hint">Ketuk amplopnya untuk membuka <span class="arrow">↓</span></p>
 </div>
